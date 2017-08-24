@@ -6,10 +6,10 @@
 
 然后下载后，进入bin/win32,双击activemq.bat,即可启动ActiveMQ服务
 
-** 在代码中，使用JmsTemplate（也就是Service中的JmsOperations）接收消息的最大缺点在于receive()和receiveAndConvert()方法都是同步的。
-  这意味着接受者必须耐心等待消息的到来，因此这些方法会一直被阻塞，知道有可用的消息（或者直到超时）。同步接收异步发来的消息，是不是感到很怪异？
-  此时要用到消息驱动POJO....
-**
+**在代码中，使用JmsTemplate（也就是Service中的JmsOperations）接收消息的最大缺点在于receive()和receiveAndConvert()方法都是同步的**
+**这意味着接受者必须耐心等待消息的到来，因此这些方法会一直被阻塞，知道有可用的消息（或者直到超时）。同步接收异步发来的消息，是不是感到很怪异**
+**此时要用到消息驱动POJO...**
+    
 
 
 总结：
