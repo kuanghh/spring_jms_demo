@@ -6,9 +6,9 @@ import org.springframework.jms.core.JmsOperations;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
+import javax.jms.*;
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Created by 951087952@qq.com on 2017/8/24.
@@ -46,4 +46,60 @@ public class AlertServiceImpl implements AlertService{
          */
         jmsOperations.convertAndSend("user.queue",user);
     }
+
+    @Override
+    public void sendUserTextMessage(String message, Destination destination) {
+        jmsOperations.send(destination, new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                return session.createTextMessage(message);
+            }
+        });
+    }
+
+    @Override
+    public void sendUserByteMessage(byte[] message, Destination destination) {
+        jmsOperations.send(destination, new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+
+                BytesMessage bytesMessage = session.createBytesMessage();
+                bytesMessage.writeBytes(message);
+                return bytesMessage;
+            }
+        });
+    }
+
+    @Override
+    public void sendUserMapMessage(Map<String, Object> message, Destination destination) {
+        jmsOperations.send(destination, new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+
+                MapMessage mapMessage = session.createMapMessage();
+
+                for(Map.Entry<String,Object> entry : message.entrySet()){
+                    mapMessage.setObject(entry.getKey(),entry.getValue());
+//                    mapMessage.setObjectProperty(entry.getKey(),entry.getValue());
+                    //setObjectProperty设置指定的java值,与setObject不同
+                    //MapMesssage只能接收java的primitive类型数据，也就是基本数据类型
+                }
+
+                return mapMessage;
+            }
+        });
+    }
+
+    @Override
+    public void sendUserObjectMessage(Object obj, Destination destination) {
+        jmsOperations.send(destination, new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+
+                return session.createObjectMessage((Serializable) obj);
+            }
+        });
+    }
+
+
 }

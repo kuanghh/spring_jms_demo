@@ -41,5 +41,14 @@ public class DefaultMessageDelegate implements MessageDelegate{
     public void handlerMessage(Serializable message) {
         System.out.println("DefaultMessageDelegate.handlerMessage(Serializable message)处理了该消息");
         System.out.println(message.toString());
+
+//        if(message instanceof  Map){
+//            Map<String, Object> map = (Map<String, Object>) message;
+//            for(Map.Entry<String,Object> entry : map.entrySet()){
+//                String key = entry.getKey();
+//                Object value = entry.getValue();
+//                System.out.println("key :" + key + ",value : " + value);
+//            }
+//        }
     }
 }

@@ -118,7 +118,7 @@
 	</bean>
 
 	<!--
-		第四部，运行com.khh.test.TestPublish的testPublish1方法,将会被DefaultMessageDelegate.handlerMessage(Serializable message)方法处理
+		第四步:运行com.khh.test.TestPublish的testPublish1方法,将会被DefaultMessageDelegate.handlerMessage(Serializable message)方法处理
 			运行com.khh.test.TestPublish的testPublish2方法,将会被DefaultMessageDelegate.handlerMessage(byte[] message)方法处理
 	-->
 
