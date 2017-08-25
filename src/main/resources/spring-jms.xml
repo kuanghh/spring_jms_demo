@@ -60,4 +60,24 @@
 	</bean>
 
 	<bean id="jsonMessageConverter" class="org.springframework.jms.support.converter.MappingJackson2MessageConverter"/>
+
+
+	<!--  /////////////////////////////////////////以上配置适用于demo1///////////////////////////////////////////////////////////////////////////      -->
+
+	<!--
+		声明一个Message Driven POJO(MDP)
+	-->
+	<bean id="exampleListener" class="com.khh.demo2_pojo.listener.ExampleListener"/>
+
+	<!--
+		装配一个消息监听容器,当配置了这个容器之后，就会自动监听到destination指定的路径，一旦有消息发送过来，
+		就会被ExampleListener截取到，并且由ExampleListener处理对应的消息
+	-->
+	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="destination" ref="queue"/>
+		<property name="messageListener" ref="exampleListener"/>
+	</bean>
+
+
 </beans>

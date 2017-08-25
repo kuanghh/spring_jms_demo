@@ -1,13 +1,10 @@
-package com.khh.test;
+package com.khh.demo1.test;
 
-import com.khh.entity.User;
-import com.khh.service.AlertService;
-import com.khh.service.ReceiveService;
+import com.khh.demo1.service.ReceiveService;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.jms.Destination;
-import java.util.Date;
 
 /**
  * Created by 951087952@qq.com on 2017/8/24.

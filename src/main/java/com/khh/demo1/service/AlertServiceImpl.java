@@ -1,4 +1,4 @@
-package com.khh.service;
+package com.khh.demo1.service;
 
 import com.khh.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;

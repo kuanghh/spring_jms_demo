@@ -1,8 +1,7 @@
-package com.khh.test;
+package com.khh.demo1.test;
 
 import com.khh.entity.User;
-import com.khh.service.AlertService;
-import com.khh.service.AlertServiceImpl;
+import com.khh.demo1.service.AlertService;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

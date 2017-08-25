@@ -1,4 +1,4 @@
-package com.khh.service;
+package com.khh.demo1.service;
 
 import com.khh.entity.User;
 import org.apache.activemq.command.ActiveMQBytesMessage;
@@ -6,14 +6,10 @@ import org.apache.activemq.command.ActiveMQObjectMessage;
 import org.apache.activemq.util.ByteSequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsOperations;
-import org.springframework.jms.support.JmsUtils;
 import org.springframework.stereotype.Service;
 
 import javax.jms.Destination;
-import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.ObjectMessage;
-import java.io.Serializable;
 
 /**
  * Created by 951087952@qq.com on 2017/8/24.
