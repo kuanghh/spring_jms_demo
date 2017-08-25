@@ -20,12 +20,19 @@
 
 	<!--
 		用普通的装配方法，配置ActiveMQ
+		这里适用于demo1-demo3
 	-->
-	<import resource="spring-jms.xml"/>
+	<!--<import resource="spring-jms.xml"/>-->
 
 	<!--
 		用ActiveMQ的命名空间配置ActiveMQ
 	-->
 	<!--<import resource="spring-jms-ActiveMQ.xml"/>-->
+
+	<!--
+		使用注解的方式，监听ActiveMQ消息
+		这里只适用于demo4
+	-->
+	<context:component-scan base-package="com.khh.demo4_anno.conf"/>
 
 </beans>

@@ -1,4 +1,4 @@
-package com.khh.demo1.test;
+package com.khh.test;
 
 import com.khh.entity.User;
 import com.khh.demo1.service.AlertService;
@@ -34,7 +34,7 @@ public class TestPublish {
         alertService.sendUserWithConvert(new User(79,"用户79",new Date()));
     }
 
-
+/*********************************下面列子配合demo3使用*******************************************************/
     @Test
     public void testPublishTextMessage() throws Exception{
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");

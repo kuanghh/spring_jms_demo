@@ -1,5 +1,5 @@
 # 这个是在Spring中使用JMS发送和接受消息的Demo ，这里使用ActiveMQ作为消息代理
-
+###  项目需要先阅读spring.xml配置文件，再阅读其它代码
 
 用的Window7 32操作系统，
 首先下载ActiveMQ，官网：http://activemq.apache.org
@@ -8,7 +8,7 @@
 
 **在代码中，使用JmsTemplate（也就是Service中的JmsOperations）接收消息的最大缺点在于receive()和receiveAndConvert()方法都是同步的**
 **这意味着接受者必须耐心等待消息的到来，因此这些方法会一直被阻塞，知道有可用的消息（或者直到超时）。同步接收异步发来的消息，是不是感到很怪异**
-**此时要用到消息驱动POJO...**
+**此时要用到消息驱动POJO,详细看demo1与demo2...**
     
 
 

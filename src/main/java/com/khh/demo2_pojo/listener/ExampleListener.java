@@ -17,6 +17,7 @@ import java.io.Serializable;
 public class ExampleListener implements MessageListener{
     @Override
     public void onMessage(Message message) {
+        System.out.println("ExampleListener onMessage(Message message)");
         if (message instanceof TextMessage) {
             try {
                 System.out.println(((TextMessage) message).getText());
