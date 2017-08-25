@@ -62,7 +62,7 @@
 	<bean id="jsonMessageConverter" class="org.springframework.jms.support.converter.MappingJackson2MessageConverter"/>
 
 
-	<!--  /////////////////////////////////////////以上配置适用于demo1///////////////////////////////////////////////////////////////////////////      -->
+<!--  /////////////////////////////////////////以上配置适用于demo1///////////////////////////////////////////////////////////////////////////-->
 
 	<!--
 		声明一个Message Driven POJO(MDP)
@@ -73,11 +73,57 @@
 		装配一个消息监听容器,当配置了这个容器之后，就会自动监听到destination指定的路径，一旦有消息发送过来，
 		就会被ExampleListener截取到，并且由ExampleListener处理对应的消息
 	-->
+	<!--<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
+		<!--<property name="connectionFactory" ref="connectionFactory"/>-->
+		<!--&lt;!&ndash;监听队列&ndash;&gt;-->
+		<!--<property name="destination" ref="queue"/>-->
+		<!--<property name="messageListener" ref="exampleListener"/>-->
+	<!--</bean>-->
+
+	<!--
+		配置了以上设置后，当运行com.khh.test.TestPublish的testPublish1方法，和testPublish2方法后都会自动收到信息并且输出
+		（本demo把消息发布者和消息接受者都放在了一起，当TestPublish发布消息后，jmsContainer就会收到信息,并交给ExampleListener处理
+	-->
+
+<!--/////////////////////////////////////////以上配置适用于demo2///////////////////////////////////////////////////////////////////////////-->
+
+	<!--
+		由于demo2可以发现，基于以上方式，所有的MDP都需要实现MessageListener这个接口
+		下面方式 演示了 不实现MessageListener接口也能达到声明一个MDP
+	-->
+
+	<!--
+		第一步:创建一个消息代理接口(自定义处理接口)，MessageDelegate ，这个接口的方法全部是handleMessage，然后用不同的参数重载该方法
+				并且创建MessageDelegate默认的实现类DefaultMessageDelegate
+	-->
+	<bean id="messageDelegate" class="com.khh.demo3_pojo.delegate.DefaultMessageDelegate"/>
+	<!--
+		第二步:配置MDP，这里需要用到MessageListenerAdapter，这是一个消息监听适配器,从这个类的源码可以看到，
+			消息代理的方法可以改变的，不一定全部都是handleMessage，只需要设置defaultListenerMethod属性即可
+	-->
+	<bean id="messsageListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+		<constructor-arg ref="messageDelegate"/>
+		<!--下面默认值是handleMessage，这里我设置为handlerMessage,因为我的消息代理接口方式handlerMessage-->
+		<property name="defaultListenerMethod" value="handlerMessage"/>
+	</bean>
+
+	<!--
+		第三步：重新配置jms容器
+	-->
 	<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="connectionFactory"/>
 		<property name="destination" ref="queue"/>
-		<property name="messageListener" ref="exampleListener"/>
+		<property name="messageListener" ref="messsageListener"/>
+		<property name="messageConverter" ref="jsonMessageConverter"/>
 	</bean>
+
+	<!--
+		第四部，运行com.khh.test.TestPublish的testPublish1方法,将会被DefaultMessageDelegate.handlerMessage(Serializable message)方法处理
+			运行com.khh.test.TestPublish的testPublish2方法,将会被DefaultMessageDelegate.handlerMessage(byte[] message)方法处理
+	-->
+
+
+<!--/////////////////////////////////////////以上配置适用于demo3///////////////////////////////////////////////////////////////////////////-->
 
 
 </beans>
