@@ -1,6 +1,7 @@
 package com.khh.demo4_anno.conf;
 
 import com.khh.demo2_pojo.listener.ExampleListener;
+import com.khh.demo4_anno.validator.UserValidator;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.spring.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.jms.support.destination.DynamicDestinationResolver;
 import org.springframework.jms.support.destination.JmsDestinationAccessor;
+import org.springframework.messaging.handler.annotation.support.DefaultMessageHandlerMethodFactory;
 
 import javax.jms.Destination;
 
@@ -64,6 +66,11 @@ public class SpringJMSConf implements JmsListenerConfigurer {
     }
 
     @Bean
+    public Destination queue2(){
+        return new ActiveMQQueue("user.queue.new");
+    }
+
+    @Bean
     public JmsTemplate jmsTemplate(){
         JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory());
         jmsTemplate.setDefaultDestination(queue());
@@ -84,12 +91,42 @@ public class SpringJMSConf implements JmsListenerConfigurer {
      *  不然的话，会出现两个监听者，同时监听一条队列（这样做并不是不可以，只是会出现有的时候MyService收到消息，有的时候ExamplerListener收到消息）
      * @param jmsListenerEndpointRegistrar
      */
+//    @Override
+//    public void configureJmsListeners(JmsListenerEndpointRegistrar jmsListenerEndpointRegistrar) {
+//        SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
+//        endpoint.setId("myJmsEndpoint");
+//        endpoint.setDestination("user.queue");
+//        endpoint.setMessageListener(new ExampleListener());
+//        jmsListenerEndpointRegistrar.registerEndpoint(endpoint);
+//    }
+
+    /**
+     * 如果要 校验接收到的信息，  可以采取如下措施
+     * @param jmsListenerEndpointRegistrar
+     */
     @Override
     public void configureJmsListeners(JmsListenerEndpointRegistrar jmsListenerEndpointRegistrar) {
-        SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();
-        endpoint.setId("myJmsEndpoint");
-        endpoint.setDestination("user.queue");
-        endpoint.setMessageListener(new ExampleListener());
-        jmsListenerEndpointRegistrar.registerEndpoint(endpoint);
+        jmsListenerEndpointRegistrar.setMessageHandlerMethodFactory(messageHandlerMethodFactory());
     }
+
+    /**
+     *注册校验器
+     * @return
+     */
+    @Bean
+    public DefaultMessageHandlerMethodFactory messageHandlerMethodFactory(){
+        DefaultMessageHandlerMethodFactory factory = new DefaultMessageHandlerMethodFactory();
+        factory.setValidator(myValidator());
+        return factory;
+    }
+
+    /**
+     * 创建一个User的校验器
+     * @return
+     */
+    @Bean
+    public UserValidator myValidator(){
+        return new UserValidator();
+    }
+
 }

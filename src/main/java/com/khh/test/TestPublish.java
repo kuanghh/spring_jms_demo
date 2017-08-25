@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class TestPublish {
 
-
+ /*********************************下面列子可配合demo1、demo2、demo4使用*******************************************************/
     @Test
     public void testPublish1() throws Exception{
 
@@ -23,6 +23,9 @@ public class TestPublish {
         AlertService alertService = (AlertService) context.getBean("alertService");
 
         alertService.sendUserAlert(new User(79,"用户79",new Date()));
+//        alertService.sendUserAlert(new User(-1,"用户79",new Date()));//如果使用了校验器，当接受到信息的时候，就会提示错误，因为id不能小于0
+
+        Thread.sleep(3000);
     }
 
     @Test
@@ -55,7 +58,7 @@ public class TestPublish {
     }
 
     @Test
-    public void testPublicMapMessage() throws Exception{
+    public void testPublishMapMessage() throws Exception{
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         AlertService alertService = (AlertService)context.getBean("alertService");
 
@@ -71,7 +74,7 @@ public class TestPublish {
     }
 
     @Test
-    public void testPublicObjectMessage() throws Exception{
+    public void testPublishObjectMessage() throws Exception{
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
         AlertService alertService = (AlertService)context.getBean("alertService");
 
@@ -86,4 +89,23 @@ public class TestPublish {
         alertService.sendUserObjectMessage(map,destination);
     }
 
+
+/*********************************下面列子配合demo4使用*******************************************************/
+
+    /**
+     * 这个方法用来测试，当消息从队列中获取后，马上把消息转发到另外一条队列，并且从此队列中获取消息
+     * @throws Exception
+     */
+    @Test
+    public void testPublishMessageForRelay() throws Exception{
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        AlertService alertService = (AlertService)context.getBean("alertService");
+
+        Destination destination = (Destination) context.getBean("queue");
+
+        alertService.sendUserObjectMessage(new User(2,"用户2",new Date()),destination);
+        Thread.sleep(2000);
+
+
+    }
 }
